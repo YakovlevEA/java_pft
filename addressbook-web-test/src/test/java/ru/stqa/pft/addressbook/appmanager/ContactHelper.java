@@ -49,4 +49,15 @@ public class ContactHelper extends HelperBase {
     public void submitContactModification() {
         click(By.name("update"));
     }
+
+    public void createContact(ContactData contactData) {
+        fillContactform(new ContactData("firstName",
+                "middleName", "lastName", "test1"), true);
+        submitContactCreation();
+        returnToHomePage();
+    }
+
+    public boolean isThereAContact(By locator) {
+        return isElementPresent(locator);
+    }
 }
