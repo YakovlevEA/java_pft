@@ -1,12 +1,11 @@
 package ru.stqa.pft.addressbook.tests;
 
-import org.testng.Assert;
 import org.testng.annotations.*;
 import ru.stqa.pft.addressbook.appmanager.model.GroupData;
+import ru.stqa.pft.addressbook.appmanager.model.Groups;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 
 public class GroupCreationTests extends TestBase {
@@ -15,12 +14,12 @@ public class GroupCreationTests extends TestBase {
     public void testGroupCreation() {
 
         app.goTo().groupPage();
-        Set<GroupData> before = app.group().All();
+        Groups before = app.group().all();
         GroupData group = new GroupData().withName("test1");
         app.group().create(group);
-        Set<GroupData> after = app.group().All();
-        Assert.assertEquals(after.size(), before.size() + 1);
-
+        Groups after = app.group().all();
+        //Assert.assertEquals(after.size(), before.size() + 1);
+        assertThat(app.group().Count(), equalTo(before.size() + 1));
         /*int max = 0;
         for (GroupData g : after){
             if (g.getId() > max){
@@ -45,9 +44,24 @@ public class GroupCreationTests extends TestBase {
         Comparator<? super GroupData> byID = (g1, g2) -> Integer.compare(g1.getId(),g2.getId()) ;
         before.sort(byID);
         after.sort(byID);*/
-        group.withId(after.stream().mapToInt((g)->g.getId()).max().getAsInt());
-        before.add(group);
-        Assert.assertEquals(before, after);
+        //group.withId(after.stream().mapToInt((g)->g.getId()).max().getAsInt());
+        //before.add(group);
+        //Assert.assertEquals(before, after);
+        assertThat(after,
+                equalTo(before.withAdded(group.withId(after.stream().mapToInt((g)->g.getId()).max().getAsInt()))));
+    }
+
+    @Test
+    public void testGroupBadCreation() {
+
+        app.goTo().groupPage();
+        Groups before = app.group().all();
+        GroupData group = new GroupData().withName("test1'");
+        app.group().create(group);
+        assertThat(app.group().Count(), equalTo(before.size()));
+        Groups after = app.group().all();
+
+        assertThat(after, equalTo(before));
     }
 
 }
