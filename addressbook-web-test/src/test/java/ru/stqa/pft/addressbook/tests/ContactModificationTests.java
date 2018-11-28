@@ -1,7 +1,6 @@
 package ru.stqa.pft.addressbook.tests;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.appmanager.model.ContactData;
@@ -10,11 +9,11 @@ import java.util.Comparator;
 import java.util.List;
 
 public class ContactModificationTests extends TestBase {
-    @Test
+    @Test (enabled = false)
     public void testContactModification(){
-        app.getNavigationHelper().gotoHomePage();
+        app.goTo().gotoHomePage();
         if (! app.getContactHelper().isThereAContact(By.cssSelector(("[name='selected[]']")))){
-            app.getNavigationHelper().gotoAddNewPage();
+            app.goTo().gotoAddNewPage();
             app.getContactHelper().createContact(new ContactData("","","","null"));
         }
         List<ContactData> before = app.getContactHelper().getContactList();

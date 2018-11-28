@@ -8,17 +8,17 @@ import ru.stqa.pft.addressbook.appmanager.model.ContactData;
 import java.util.List;
 
 public class ContactDeletionTests extends TestBase{
-    @Test
+    @Test (enabled = false)
     public void testContactDeletion(){
-        app.getNavigationHelper().gotoHomePage();
+        app.goTo().gotoHomePage();
         if (! app.getContactHelper().isThereAContact(By.cssSelector(("[name='selected[]']")))){
-            app.getNavigationHelper().gotoAddNewPage();
+            app.goTo().gotoAddNewPage();
             app.getContactHelper().createContact(new ContactData("","","","null"));
         }
         List<ContactData> before = app.getContactHelper().getContactList();
         app.getContactHelper().selectContact(before.size() - 1);
         app.getContactHelper().deleteSelectionContact();
-        app.getNavigationHelper().gotoHomePage();
+        app.goTo().gotoHomePage();
         List<ContactData> after = app.getContactHelper().getContactList();
 
         before.remove(before.size() - 1);
