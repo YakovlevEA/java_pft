@@ -10,8 +10,15 @@ public class ContactData {
     private String group;
     private String homePhone;
     private String mobilePhone;
+    private String allPhones;
+
+    public ContactData withAllPhones(String allPhones) {
+        this.allPhones = allPhones;
+        return this;
+    }
 
     public ContactData withHomePhone(String homePhone) {
+
         this.homePhone = homePhone;
         return this;
     }

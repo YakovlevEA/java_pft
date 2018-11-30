@@ -93,9 +93,9 @@ public class ContactHelper extends HelperBase {
             int id = Integer.parseInt(row.findElement(By.cssSelector("input[type='checkbox']")).getAttribute("id"));
             String firstName = cells.get(1).getText();
             String lastName = cells.get(2).getText();
-            String[] phones = cells.get(5).getText().split("\n");
+            String allPhones = cells.get(5).getText();
             contacts.add(new ContactData().withId(id).withFirstName(firstName).withLastName(lastName).
-            withHomePhone(phones[0]).withMobilePhone(phones[1]).withWorkPhone(phones[2]));
+            withAllPhone(allPhones));
         }
         return contacts;
     }
