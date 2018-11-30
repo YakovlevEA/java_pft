@@ -1,43 +1,34 @@
 package ru.stqa.pft.addressbook.tests;
 
 import org.openqa.selenium.By;
-import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.appmanager.model.ContactData;
+import ru.stqa.pft.addressbook.appmanager.model.Contacts;
 
-import java.util.Comparator;
-import java.util.List;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ContactModificationTests extends TestBase {
-    @Test (enabled = false)
-    public void testContactModification(){
+    @BeforeMethod
+    public void ensurePreconditions(){
         app.goTo().gotoHomePage();
-        if (! app.getContactHelper().isThereAContact(By.cssSelector(("[name='selected[]']")))){
-            app.goTo().gotoAddNewPage();
-            app.getContactHelper().createContact(new ContactData("","","","null"));
+        if (! app.contact().isThereAContact(By.cssSelector(("[name='selected[]']")))){
+            app.goTo().addNew();
+            app.contact().createContact(new ContactData());
         }
-        List<ContactData> before = app.getContactHelper().getContactList();
-        app.getContactHelper().initContactModification(before.size() + 1);
-        ContactData contact = new ContactData("ModFirstName",
-                "ModMiddleName","ModLastName", "null");
-        app.getContactHelper().fillContactform(contact, false);
-        app.getContactHelper().submitContactModification();
-        app.getContactHelper().returnToHomePage();
-        List<ContactData> after = app.getContactHelper().getContactList();
+    }
+    @Test (enabled = true)
+    public void testContactModification(){
 
-        Comparator<? super ContactData> ByLastNameFirstName = new Comparator<ContactData>() {
-            @Override
-            public int compare(ContactData o1, ContactData o2) {
-                String o1LastNameFirstName = o1.getLastName() + o1.getFirstName();
-                String o2LastNameFirstName = o2.getLastName() + o2.getFirstName();
-                return o1LastNameFirstName.compareTo(o2LastNameFirstName);
-            }
-        };
-        before.remove(before.size() - 1);
-        before.add(contact);
-        before.sort(ByLastNameFirstName);
+        Contacts before = app.contact().all();
+        ContactData modifiedContact = before.iterator().next();
+        ContactData contact = new ContactData().withId(modifiedContact.getId()).withFirstName("ModFirstName").withMiddleName("ModMiddleName").withLastName("ModLastName");
+        app.contact().modify(contact);
 
-        after.sort(ByLastNameFirstName);
-        Assert.assertEquals(after, before);
+        assertThat(before.size(), equalTo(app.contact().count()));
+        Contacts after = app.contact().all();
+        assertThat(before.without(modifiedContact).withAdded(contact), equalTo(after));
+
     }
 }

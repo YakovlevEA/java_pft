@@ -7,6 +7,8 @@ public class ContactPhoneTests extends TestBase{
     @Test(enabled = false)
     public void testContactPhones(){
         app.goTo().gotoHomePage();
-        ContactData contact = app.getContactHelper().all.itera
+        ContactData contact = app.contact().all().iterator().next();
+        ContactData contactInfoFromeditForm = app.contact().infoFromEditForm(contact);
+
     }
 }
