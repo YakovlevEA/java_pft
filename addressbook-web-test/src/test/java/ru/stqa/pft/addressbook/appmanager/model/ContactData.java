@@ -21,7 +21,7 @@ public class ContactData {
         return this;
     }
 
-    public ContactData setWorkPhone(String workPhone) {
+    public ContactData withWorkPhone(String workPhone) {
         this.workPhone = workPhone;
         return this;
     }
@@ -128,5 +128,6 @@ public class ContactData {
     public String getGroup() {
         return group;
     }
+
 
 }
