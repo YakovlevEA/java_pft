@@ -12,3 +12,15 @@ dependencies {
     implementation 'com.thoughtworks.xstream:xstream:1.4.11.1'
     implementation 'org.immutables:gson:2.7.3'
 }
+
+tasks testGroups(type: Test){
+    useTestNG{
+        suites 'src/test/resources/testng-groups.xml'
+    }
+}
+
+tasks testContacts(type: Test){
+    useTestNG{
+        suites 'src/test/resources/testng-contacts.xml'
+    }
+}
